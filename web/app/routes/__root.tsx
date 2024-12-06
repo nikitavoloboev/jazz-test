@@ -8,6 +8,7 @@ import { Meta, Scripts } from "@tanstack/start"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
 import { NotFound } from "~/components/NotFound"
+import { ClientOnly } from "~/lib/react"
 import { seo } from "~/lib/seo"
 import appCss from "~/styles/app.css?url"
 
@@ -77,7 +78,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Meta />
       </head>
       <body>
-        {children}
+        <ClientOnly>{() => children}</ClientOnly>
         <ScrollRestoration />
         <Scripts />
       </body>

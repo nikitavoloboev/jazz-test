@@ -4,9 +4,7 @@ import { ClerkProvider } from "~/lib/providers/clerk-provider"
 function LayoutComponent() {
   return (
     <>
-      <ClerkProvider>
-        <Outlet />
-      </ClerkProvider>
+      <Outlet />
     </>
   )
 }
