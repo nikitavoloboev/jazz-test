@@ -21,12 +21,6 @@ function assertPeerUrl(
   }
 }
 
-const JAZZ_PEER_URL = (() => {
-  const rawUrl = getEnvVariable("VITE_JAZZ_PEER_URL")
-  assertPeerUrl(rawUrl)
-  return rawUrl
-})()
-
 interface ChildrenProps {
   children: React.ReactNode
 }
@@ -61,7 +55,10 @@ function JazzProvider({
   children: React.ReactNode
 }) {
   return (
-    <Jazz.Provider auth={auth} peer={JAZZ_PEER_URL}>
+    <Jazz.Provider
+      auth={auth}
+      peer={"wss://cloud.jazz.tools/?key=minimal-auth-clerk-example@garden.co"}
+    >
       {children}
     </Jazz.Provider>
   )
