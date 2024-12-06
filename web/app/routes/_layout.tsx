@@ -1,5 +1,5 @@
-import { ClerkProvider } from "@clerk/tanstack-start"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { ClerkProvider } from "~/lib/providers/clerk-provider"
 
 function LayoutComponent() {
   return (
