@@ -1,10 +1,6 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { JazzAndAuth } from "~/lib/providers/jazz-provider"
 
-export const Route = createFileRoute("/_layout/_pages")({
-  component: PagesLayout,
-})
-
 function PagesLayout() {
   return (
     <JazzAndAuth>
@@ -32,3 +28,7 @@ function MainContent() {
     </div>
   )
 }
+
+export const Route = createFileRoute("/_layout/_pages")({
+  component: PagesLayout,
+})

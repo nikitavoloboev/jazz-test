@@ -12,6 +12,6 @@ function RouteComponent() {
   )
 }
 
-export const Route = createFileRoute("/_layout/(landing)/")({
+export const Route = createFileRoute("/_layout/_pages/")({
   component: RouteComponent,
 })
