@@ -13,139 +13,178 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as authAuthImport } from './routes/(auth)/_auth'
-import { Route as authAuthSignUpSplatImport } from './routes/(auth)/_auth.sign-up.$'
-import { Route as authAuthSignInSplatImport } from './routes/(auth)/_auth.sign-in.$'
+import { Route as LayoutPagesImport } from './routes/_layout/_pages'
+import { Route as LayoutlandingIndexImport } from './routes/_layout/(landing)/index'
+import { Route as LayoutauthAuthImport } from './routes/_layout/(auth)/_auth'
+import { Route as LayoutauthAuthSignUpSplatImport } from './routes/_layout/(auth)/_auth.sign-up.$'
+import { Route as LayoutauthAuthSignInSplatImport } from './routes/_layout/(auth)/_auth.sign-in.$'
 
 // Create Virtual Routes
 
-const authImport = createFileRoute('/(auth)')()
+const LayoutauthImport = createFileRoute('/_layout/(auth)')()
 
 // Create/Update Routes
 
-const authRoute = authImport.update({
-  id: '/(auth)',
+const LayoutauthRoute = LayoutauthImport.update({
+  id: '/_layout/(auth)',
   getParentRoute: () => rootRoute,
 } as any)
 
-const authAuthRoute = authAuthImport.update({
-  id: '/_auth',
-  getParentRoute: () => authRoute,
+const LayoutPagesRoute = LayoutPagesImport.update({
+  id: '/_layout/_pages',
+  getParentRoute: () => rootRoute,
 } as any)
 
-const authAuthSignUpSplatRoute = authAuthSignUpSplatImport.update({
+const LayoutlandingIndexRoute = LayoutlandingIndexImport.update({
+  id: '/_layout/(landing)/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutauthAuthRoute = LayoutauthAuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => LayoutauthRoute,
+} as any)
+
+const LayoutauthAuthSignUpSplatRoute = LayoutauthAuthSignUpSplatImport.update({
   id: '/sign-up/$',
   path: '/sign-up/$',
-  getParentRoute: () => authAuthRoute,
+  getParentRoute: () => LayoutauthAuthRoute,
 } as any)
 
-const authAuthSignInSplatRoute = authAuthSignInSplatImport.update({
+const LayoutauthAuthSignInSplatRoute = LayoutauthAuthSignInSplatImport.update({
   id: '/sign-in/$',
   path: '/sign-in/$',
-  getParentRoute: () => authAuthRoute,
+  getParentRoute: () => LayoutauthAuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(auth)': {
-      id: '/(auth)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authImport
+    '/_layout/_pages': {
+      id: '/_layout/_pages'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutPagesImport
       parentRoute: typeof rootRoute
     }
-    '/(auth)/_auth': {
-      id: '/(auth)/_auth'
+    '/_layout/(auth)': {
+      id: '/_layout/(auth)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof authAuthImport
-      parentRoute: typeof authRoute
+      preLoaderRoute: typeof LayoutauthImport
+      parentRoute: typeof rootRoute
     }
-    '/(auth)/_auth/sign-in/$': {
-      id: '/(auth)/_auth/sign-in/$'
+    '/_layout/(auth)/_auth': {
+      id: '/_layout/(auth)/_auth'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutauthAuthImport
+      parentRoute: typeof LayoutauthRoute
+    }
+    '/_layout/(landing)/': {
+      id: '/_layout/(landing)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutlandingIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_layout/(auth)/_auth/sign-in/$': {
+      id: '/_layout/(auth)/_auth/sign-in/$'
       path: '/sign-in/$'
       fullPath: '/sign-in/$'
-      preLoaderRoute: typeof authAuthSignInSplatImport
-      parentRoute: typeof authAuthImport
+      preLoaderRoute: typeof LayoutauthAuthSignInSplatImport
+      parentRoute: typeof LayoutauthAuthImport
     }
-    '/(auth)/_auth/sign-up/$': {
-      id: '/(auth)/_auth/sign-up/$'
+    '/_layout/(auth)/_auth/sign-up/$': {
+      id: '/_layout/(auth)/_auth/sign-up/$'
       path: '/sign-up/$'
       fullPath: '/sign-up/$'
-      preLoaderRoute: typeof authAuthSignUpSplatImport
-      parentRoute: typeof authAuthImport
+      preLoaderRoute: typeof LayoutauthAuthSignUpSplatImport
+      parentRoute: typeof LayoutauthAuthImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface authAuthRouteChildren {
-  authAuthSignInSplatRoute: typeof authAuthSignInSplatRoute
-  authAuthSignUpSplatRoute: typeof authAuthSignUpSplatRoute
+interface LayoutauthAuthRouteChildren {
+  LayoutauthAuthSignInSplatRoute: typeof LayoutauthAuthSignInSplatRoute
+  LayoutauthAuthSignUpSplatRoute: typeof LayoutauthAuthSignUpSplatRoute
 }
 
-const authAuthRouteChildren: authAuthRouteChildren = {
-  authAuthSignInSplatRoute: authAuthSignInSplatRoute,
-  authAuthSignUpSplatRoute: authAuthSignUpSplatRoute,
+const LayoutauthAuthRouteChildren: LayoutauthAuthRouteChildren = {
+  LayoutauthAuthSignInSplatRoute: LayoutauthAuthSignInSplatRoute,
+  LayoutauthAuthSignUpSplatRoute: LayoutauthAuthSignUpSplatRoute,
 }
 
-const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
-  authAuthRouteChildren,
+const LayoutauthAuthRouteWithChildren = LayoutauthAuthRoute._addFileChildren(
+  LayoutauthAuthRouteChildren,
 )
 
-interface authRouteChildren {
-  authAuthRoute: typeof authAuthRouteWithChildren
+interface LayoutauthRouteChildren {
+  LayoutauthAuthRoute: typeof LayoutauthAuthRouteWithChildren
 }
 
-const authRouteChildren: authRouteChildren = {
-  authAuthRoute: authAuthRouteWithChildren,
+const LayoutauthRouteChildren: LayoutauthRouteChildren = {
+  LayoutauthAuthRoute: LayoutauthAuthRouteWithChildren,
 }
 
-const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
+const LayoutauthRouteWithChildren = LayoutauthRoute._addFileChildren(
+  LayoutauthRouteChildren,
+)
 
 export interface FileRoutesByFullPath {
-  '/': typeof authAuthRouteWithChildren
-  '/sign-in/$': typeof authAuthSignInSplatRoute
-  '/sign-up/$': typeof authAuthSignUpSplatRoute
+  '': typeof LayoutPagesRoute
+  '/': typeof LayoutlandingIndexRoute
+  '/sign-in/$': typeof LayoutauthAuthSignInSplatRoute
+  '/sign-up/$': typeof LayoutauthAuthSignUpSplatRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof authAuthRouteWithChildren
-  '/sign-in/$': typeof authAuthSignInSplatRoute
-  '/sign-up/$': typeof authAuthSignUpSplatRoute
+  '': typeof LayoutPagesRoute
+  '/': typeof LayoutlandingIndexRoute
+  '/sign-in/$': typeof LayoutauthAuthSignInSplatRoute
+  '/sign-up/$': typeof LayoutauthAuthSignUpSplatRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/(auth)': typeof authRouteWithChildren
-  '/(auth)/_auth': typeof authAuthRouteWithChildren
-  '/(auth)/_auth/sign-in/$': typeof authAuthSignInSplatRoute
-  '/(auth)/_auth/sign-up/$': typeof authAuthSignUpSplatRoute
+  '/_layout/_pages': typeof LayoutPagesRoute
+  '/_layout/(auth)': typeof LayoutauthRouteWithChildren
+  '/_layout/(auth)/_auth': typeof LayoutauthAuthRouteWithChildren
+  '/_layout/(landing)/': typeof LayoutlandingIndexRoute
+  '/_layout/(auth)/_auth/sign-in/$': typeof LayoutauthAuthSignInSplatRoute
+  '/_layout/(auth)/_auth/sign-up/$': typeof LayoutauthAuthSignUpSplatRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in/$' | '/sign-up/$'
+  fullPaths: '' | '/' | '/sign-in/$' | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in/$' | '/sign-up/$'
+  to: '' | '/' | '/sign-in/$' | '/sign-up/$'
   id:
     | '__root__'
-    | '/(auth)'
-    | '/(auth)/_auth'
-    | '/(auth)/_auth/sign-in/$'
-    | '/(auth)/_auth/sign-up/$'
+    | '/_layout/_pages'
+    | '/_layout/(auth)'
+    | '/_layout/(auth)/_auth'
+    | '/_layout/(landing)/'
+    | '/_layout/(auth)/_auth/sign-in/$'
+    | '/_layout/(auth)/_auth/sign-up/$'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  authRoute: typeof authRouteWithChildren
+  LayoutPagesRoute: typeof LayoutPagesRoute
+  LayoutauthRoute: typeof LayoutauthRouteWithChildren
+  LayoutlandingIndexRoute: typeof LayoutlandingIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  authRoute: authRouteWithChildren,
+  LayoutPagesRoute: LayoutPagesRoute,
+  LayoutauthRoute: LayoutauthRouteWithChildren,
+  LayoutlandingIndexRoute: LayoutlandingIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -158,30 +197,38 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/(auth)"
+        "/_layout/_pages",
+        "/_layout/(auth)",
+        "/_layout/(landing)/"
       ]
     },
-    "/(auth)": {
-      "filePath": "(auth)",
+    "/_layout/_pages": {
+      "filePath": "_layout/_pages.tsx"
+    },
+    "/_layout/(auth)": {
+      "filePath": "_layout/(auth)",
       "children": [
-        "/(auth)/_auth"
+        "/_layout/(auth)/_auth"
       ]
     },
-    "/(auth)/_auth": {
-      "filePath": "(auth)/_auth.tsx",
-      "parent": "/(auth)",
+    "/_layout/(auth)/_auth": {
+      "filePath": "_layout/(auth)/_auth.tsx",
+      "parent": "/_layout/(auth)",
       "children": [
-        "/(auth)/_auth/sign-in/$",
-        "/(auth)/_auth/sign-up/$"
+        "/_layout/(auth)/_auth/sign-in/$",
+        "/_layout/(auth)/_auth/sign-up/$"
       ]
     },
-    "/(auth)/_auth/sign-in/$": {
-      "filePath": "(auth)/_auth.sign-in.$.tsx",
-      "parent": "/(auth)/_auth"
+    "/_layout/(landing)/": {
+      "filePath": "_layout/(landing)/index.tsx"
     },
-    "/(auth)/_auth/sign-up/$": {
-      "filePath": "(auth)/_auth.sign-up.$.tsx",
-      "parent": "/(auth)/_auth"
+    "/_layout/(auth)/_auth/sign-in/$": {
+      "filePath": "_layout/(auth)/_auth.sign-in.$.tsx",
+      "parent": "/_layout/(auth)/_auth"
+    },
+    "/_layout/(auth)/_auth/sign-up/$": {
+      "filePath": "_layout/(auth)/_auth.sign-up.$.tsx",
+      "parent": "/_layout/(auth)/_auth"
     }
   }
 }
