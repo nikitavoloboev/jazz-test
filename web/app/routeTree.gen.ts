@@ -8,100 +8,144 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AuthImport } from './routes/auth'
-import { Route as LayoutImport } from './routes/_layout'
-import { Route as IndexImport } from './routes/index'
+import { Route as authAuthImport } from './routes/(auth)/_auth'
+import { Route as authAuthSignUpSplatImport } from './routes/(auth)/_auth.sign-up.$'
+import { Route as authAuthSignInSplatImport } from './routes/(auth)/_auth.sign-in.$'
+
+// Create Virtual Routes
+
+const authImport = createFileRoute('/(auth)')()
 
 // Create/Update Routes
 
-const AuthRoute = AuthImport.update({
-  id: '/auth',
-  path: '/auth',
+const authRoute = authImport.update({
+  id: '/(auth)',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => rootRoute,
+const authAuthRoute = authAuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => authRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute,
+const authAuthSignUpSplatRoute = authAuthSignUpSplatImport.update({
+  id: '/sign-up/$',
+  path: '/sign-up/$',
+  getParentRoute: () => authAuthRoute,
+} as any)
+
+const authAuthSignInSplatRoute = authAuthSignInSplatImport.update({
+  id: '/sign-in/$',
+  path: '/sign-in/$',
+  getParentRoute: () => authAuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(auth)': {
+      id: '/(auth)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof authImport
       parentRoute: typeof rootRoute
     }
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutImport
-      parentRoute: typeof rootRoute
+    '/(auth)/_auth': {
+      id: '/(auth)/_auth'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof authAuthImport
+      parentRoute: typeof authRoute
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
+    '/(auth)/_auth/sign-in/$': {
+      id: '/(auth)/_auth/sign-in/$'
+      path: '/sign-in/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof authAuthSignInSplatImport
+      parentRoute: typeof authAuthImport
+    }
+    '/(auth)/_auth/sign-up/$': {
+      id: '/(auth)/_auth/sign-up/$'
+      path: '/sign-up/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof authAuthSignUpSplatImport
+      parentRoute: typeof authAuthImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface authAuthRouteChildren {
+  authAuthSignInSplatRoute: typeof authAuthSignInSplatRoute
+  authAuthSignUpSplatRoute: typeof authAuthSignUpSplatRoute
+}
+
+const authAuthRouteChildren: authAuthRouteChildren = {
+  authAuthSignInSplatRoute: authAuthSignInSplatRoute,
+  authAuthSignUpSplatRoute: authAuthSignUpSplatRoute,
+}
+
+const authAuthRouteWithChildren = authAuthRoute._addFileChildren(
+  authAuthRouteChildren,
+)
+
+interface authRouteChildren {
+  authAuthRoute: typeof authAuthRouteWithChildren
+}
+
+const authRouteChildren: authRouteChildren = {
+  authAuthRoute: authAuthRouteWithChildren,
+}
+
+const authRouteWithChildren = authRoute._addFileChildren(authRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof LayoutRoute
-  '/auth': typeof AuthRoute
+  '/': typeof authAuthRouteWithChildren
+  '/sign-in/$': typeof authAuthSignInSplatRoute
+  '/sign-up/$': typeof authAuthSignUpSplatRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof LayoutRoute
-  '/auth': typeof AuthRoute
+  '/': typeof authAuthRouteWithChildren
+  '/sign-in/$': typeof authAuthSignInSplatRoute
+  '/sign-up/$': typeof authAuthSignUpSplatRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_layout': typeof LayoutRoute
-  '/auth': typeof AuthRoute
+  '/(auth)': typeof authRouteWithChildren
+  '/(auth)/_auth': typeof authAuthRouteWithChildren
+  '/(auth)/_auth/sign-in/$': typeof authAuthSignInSplatRoute
+  '/(auth)/_auth/sign-up/$': typeof authAuthSignUpSplatRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/auth'
+  fullPaths: '/' | '/sign-in/$' | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/auth'
-  id: '__root__' | '/' | '/_layout' | '/auth'
+  to: '/' | '/sign-in/$' | '/sign-up/$'
+  id:
+    | '__root__'
+    | '/(auth)'
+    | '/(auth)/_auth'
+    | '/(auth)/_auth/sign-in/$'
+    | '/(auth)/_auth/sign-up/$'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRoute
-  AuthRoute: typeof AuthRoute
+  authRoute: typeof authRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRoute,
-  AuthRoute: AuthRoute,
+  authRoute: authRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -114,19 +158,30 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/_layout",
-        "/auth"
+        "/(auth)"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/(auth)": {
+      "filePath": "(auth)",
+      "children": [
+        "/(auth)/_auth"
+      ]
     },
-    "/_layout": {
-      "filePath": "_layout.tsx"
+    "/(auth)/_auth": {
+      "filePath": "(auth)/_auth.tsx",
+      "parent": "/(auth)",
+      "children": [
+        "/(auth)/_auth/sign-in/$",
+        "/(auth)/_auth/sign-up/$"
+      ]
     },
-    "/auth": {
-      "filePath": "auth.tsx"
+    "/(auth)/_auth/sign-in/$": {
+      "filePath": "(auth)/_auth.sign-in.$.tsx",
+      "parent": "/(auth)/_auth"
+    },
+    "/(auth)/_auth/sign-up/$": {
+      "filePath": "(auth)/_auth.sign-up.$.tsx",
+      "parent": "/(auth)/_auth"
     }
   }
 }

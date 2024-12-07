@@ -4,12 +4,11 @@ import {
   ScrollRestoration,
   createRootRouteWithContext,
 } from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 import { Meta, Scripts } from "@tanstack/start"
 import * as React from "react"
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary"
 import { NotFound } from "~/components/NotFound"
-import { ClerkProvider } from "~/lib/providers/clerk-provider"
-import { ClientOnly } from "~/lib/react"
 import { seo } from "~/lib/seo"
 import appCss from "~/styles/app.css?url"
 
@@ -79,16 +78,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Meta />
       </head>
       <body>
-        <ClientOnly fallback={<div>Loading...</div>}>
-          {() => {
-            return (
-              <>
-                <ClerkProvider>{children}</ClerkProvider>
-              </>
-            )
-          }}
-        </ClientOnly>
+        {children}
         <ScrollRestoration />
+        {/* TODO: add in way that i can dismiss it and remember per session */}
+        {/* <TanStackRouterDevtools position="bottom-right" /> */}
         <Scripts />
       </body>
     </html>
