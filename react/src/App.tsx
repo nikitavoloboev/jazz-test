@@ -5,7 +5,6 @@ import { Logo } from "./Logo.tsx"
 
 function App() {
   const { me } = useAccount({ profile: {}, root: {} })
-
   const isAuthenticated = useIsAuthenticated()
 
   return (
@@ -23,7 +22,7 @@ function App() {
       <main className="container mt-16 flex flex-col gap-8">
         <Logo />
         <div className="text-center">
-          <pre className="text-left inline-block">
+          <pre className="text-left inline-block bg-gray-100 p-4 rounded-lg overflow-auto max-w-full">
             {JSON.stringify(me?.root, null, 2)}
           </pre>
         </div>
