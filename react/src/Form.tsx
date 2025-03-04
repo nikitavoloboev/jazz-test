@@ -2,7 +2,6 @@ import { useAccount } from "jazz-react"
 
 export function Form() {
   const { me } = useAccount({ profile: {}, root: {} })
-
   if (!me) return null
 
   return (
@@ -33,8 +32,18 @@ export function Form() {
           onChange={(e) => (me.root.dateOfBirth = new Date(e.target.value))}
         />
       </div>
-
-      {/*Add more fields here*/}
+      <div className="flex items-start gap-3">
+        <label htmlFor="bio" className="sm:w-32">
+          Bio
+        </label>
+        <textarea
+          id="bio"
+          placeholder="Tell us about yourself..."
+          className="border border-stone-300 rounded shadow-sm py-1 px-2 flex-1 min-h-[100px]"
+          value={me.root.bio || ""}
+          onChange={(e) => (me.root.bio = e.target.value)}
+        />
+      </div>
     </div>
   )
 }

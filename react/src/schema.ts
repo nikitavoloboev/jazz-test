@@ -21,6 +21,7 @@ export class JazzProfile extends Profile {
  *  where you can store top-level objects for that user */
 export class AccountRoot extends CoMap {
   dateOfBirth = co.Date
+  bio = co.string
 
   // Add private fields here
 
@@ -45,8 +46,9 @@ export class JazzAccount extends Account {
       this.root = AccountRoot.create(
         {
           dateOfBirth: new Date("1/1/1990"),
+          bio: "",
         },
-        group,
+        group
       )
     }
   }
